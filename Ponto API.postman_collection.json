@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "efd2e987-a334-4345-a124-355c2291f168",
+		"_postman_id": "306e6178-ce14-4d2a-89ed-4ad891d7dd8e",
 		"name": "Ponto API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31631056"
 	},
 	"item": [
 		{
@@ -656,6 +657,871 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "8. Payment Request",
+			"item": [
+				{
+					"name": "8.1: Create Payment Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.environment.set(\"ponto-payment-id\", jsonData.data.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"attributes\": {\n        \"amount\": 0.01,\n        \"remittanceInformation\": \"hello\",\n        \"remittanceInformationType\": \"unstructured\",\n        \"endToEndId\": \"1234\",\n        \"redirectUri\": \"https://wikipedia.com\"\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{ponto-hostname}}/accounts/{{ponto-account-id}}/payment-requests",
+							"protocol": "https",
+							"host": [
+								"{{ponto-hostname}}"
+							],
+							"path": [
+								"accounts",
+								"{{ponto-account-id}}",
+								"payment-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.2: Get Payment Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{ponto-hostname}}/accounts/{{ponto-account-id}}/payments/{{ponto-payment-id}}",
+							"protocol": "https",
+							"host": [
+								"{{ponto-hostname}}"
+							],
+							"path": [
+								"accounts",
+								"{{ponto-account-id}}",
+								"payments",
+								"{{ponto-payment-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.3: Delete Payment Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{ponto-hostname}}/accounts/{{ponto-account-id}}/payments/{{ponto-payment-id}}",
+							"protocol": "https",
+							"host": [
+								"{{ponto-hostname}}"
+							],
+							"path": [
+								"accounts",
+								"{{ponto-account-id}}",
+								"payments",
+								"{{ponto-payment-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "9. Dashboard API",
+			"item": [
+				{
+					"name": "9.1 Own Organisation",
+					"item": [
+						{
+							"name": "9.1.1 Details",
+							"item": [
+								{
+									"name": "9.1.1.1 Get Me",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/me",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.1.2 Get Organization Accounts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-account-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/organization-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"organization-accounts"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "9.1.2 Users",
+							"item": [
+								{
+									"name": "9.1.2.1 Get Users",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/users",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.2.2 Get User Invitations",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/user-invitations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"user-invitations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.2.3 Create User Invitation",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"pm.environment.set(\"ponto-user-invitation-id\", jsonData.data.id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"email\": \"test@hotmail.com\",\n      \"role\": \"administrator\"\n    }\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/user-invitations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"user-invitations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.2.4 Delete User Invitation",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/user-invitations/{{ponto-user-invitation-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"user-invitations",
+												"{{ponto-user-invitation-id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "9.1.3 Mandates",
+							"item": [
+								{
+									"name": "9.1.3.1 Get Given Mandates",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-given-mandate-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/given-mandates",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"given-mandates"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.3.2 Delete given mandates",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/given-mandates/{{ponto-given-mandate-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"given-mandates",
+												"{{ponto-given-mandate-id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.3.3 Get mandate accounts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-mandate-account-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/given-mandates/{{ponto-given-mandate-id}}/mandate-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"given-mandates",
+												"{{ponto-given-mandate-id}}",
+												"mandate-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.3.4 Delete mandate account",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/given-mandates/{{ponto-given-mandate-id}}/mandate-accounts/{{ponto-mandate-account-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"given-mandates",
+												"{{ponto-given-mandate-id}}",
+												"mandate-accounts",
+												"{{ponto-mandate-account-id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "9.1.4 Integrations",
+							"item": [
+								{
+									"name": "9.1.4.1 Get Integrations",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-integration-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/integrations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"integrations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.4.2 Create integration",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data) {",
+													"    pm.environment.set(\"ponto-integration-id\", jsonData.data.id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"name\": \"Test integration\",\n      \"scope\": [\"ai\"],\n      \"accountIds\": [\"{{ponto-account-id}}\"]\n    }\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/integrations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"integrations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.4.3 Get Integration accounts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-integration-account-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/integrations/{{ponto-integration-id}}/integration-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"integrations",
+												"{{ponto-integration-id}}",
+												"integration-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.4.4 Add account to integration",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"accountId\": \"{{ponto-account-id}}\"\n    }\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/integrations/{{ponto-integration-id}}/integration-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"integrations",
+												"{{ponto-integration-id}}",
+												"integration-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.4.5 Delete Integration Account",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/integrations/{{ponto-integration-id}}/integration-accounts/{{ponto-integration-account-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"integrations",
+												"{{ponto-integration-id}}",
+												"integration-accounts",
+												"{{ponto-integration-account-id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "9.2 Represented organisation",
+					"item": [
+						{
+							"name": "9.2.1 Details",
+							"item": [
+								{
+									"name": "9.2.1.1 Get mandates",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-mandate-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.2.1.2 Get mandate details",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.2.1.3 Get mandate accounts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-mandate-account-id\", jsonData.data[0].id);",
+													"    pm.environment.set(\"ponto-account-id\", jsonData.data[0].relationships.account.data.id)",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"accounts"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "9.2.2 Represented organisation integrations",
+							"item": [
+								{
+									"name": "9.2.2.1 Get represented organization integrations",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-represented-integration-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/integrations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"integrations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.1.2.2 Create represented organization integration",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data) {",
+													"    pm.environment.set(\"ponto-represented-integration-id\", jsonData.data.id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"name\": \"Test integration\",\n      \"scope\": [\"ai\"],\n      \"accountIds\": [\"{{ponto-account-id}}\"]\n    }\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/integrations",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"integrations"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.2.2.2 Get represented organization integration accounts",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data[0]) {",
+													"    pm.environment.set(\"ponto-integration-account-id\", jsonData.data[0].id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/integrations/{{ponto-represented-integration-id}}/integration-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"integrations",
+												"{{ponto-represented-integration-id}}",
+												"integration-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.2.2.3 Add account to represented organization",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"",
+													"if (jsonData.data) {",
+													"    pm.environment.set(\"ponto-integration-account-id\", jsonData.data.id);",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"accountId\": \"{{ponto-account-id}}\"\n    }\n  }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/integrations/{{ponto-represented-integration-id}}/integration-accounts",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"integrations",
+												"{{ponto-represented-integration-id}}",
+												"integration-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9.2.2.4 Delete account from represented organization",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{ponto-hostname}}/received-mandates/{{ponto-mandate-id}}/integrations/{{ponto-represented-integration-id}}/integration-accounts/{{ponto-integration-account-id}}",
+											"protocol": "https",
+											"host": [
+												"{{ponto-hostname}}"
+											],
+											"path": [
+												"received-mandates",
+												"{{ponto-mandate-id}}",
+												"integrations",
+												"{{ponto-represented-integration-id}}",
+												"integration-accounts",
+												"{{ponto-integration-account-id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	],
 	"auth": {
@@ -686,6 +1552,20 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Client ID",
+			"value": "ponto"
+		},
+		{
+			"key": "ponto-client-id",
+			"value": "a5453e86-d672-4f42-8481-8ae3bbeb8a26"
+		},
+		{
+			"key": "ponto-client-secret",
+			"value": "eb229614-678f-44d0-a0e7-a5012e164b7f"
 		}
 	]
 }
